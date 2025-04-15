@@ -109,26 +109,18 @@ void frontBackSplitLinkedList(LinkedList *ll, LinkedList *resultFrontList, Linke
 	int ListSize = ll->size;
 	int halved;
 	int otherhalved;
-	if (ListSize % 2 ==0)
-	{
-		halved = ListSize / 2;
-		otherhalved = halved;
-	}
-	else
-	{
-		halved = ListSize / 2 + 1;
-		otherhalved = halved - 1;
-	}
+	halved=(ListSize+1)/2;
+
 	for(int i = 1; i <= ListSize; i++)
 	{
 		if (i <= halved)
 		{
-			insertNode(resultFrontList,i-1,cur->item);
+			insertNode(resultFrontList, resultFrontList->size,cur->item);
 			cur = cur->next;
 		}
 		else
 		{
-			insertNode(resultBackList,i-1-halved,cur->item);
+			insertNode(resultBackList, resultBackList->size,cur->item);
 			cur = cur->next;
 		}
 	}

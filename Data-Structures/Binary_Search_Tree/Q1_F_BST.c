@@ -14,21 +14,21 @@ Purpose: Implementing the required functions for Question 1 */
 ///////////////////////////////////////////////////////////////////////////////////
 
 typedef struct _bstnode{
-	int item;
-	struct _bstnode *left;
-	struct _bstnode *right;
+	int item;						// 값
+	struct _bstnode *left;			// 왼쪽 자식
+	struct _bstnode *right;			// 오른쪽 자식
 } BSTNode;   // You should not change the definition of BSTNode
 
 typedef struct _QueueNode {
-	BSTNode *data;
-	struct _QueueNode *nextPtr;
+	BSTNode *data;					// 노드의 데이터 주소값
+	struct _QueueNode *nextPtr;		// 다음 노드 주소값
 }QueueNode; // You should not change the definition of QueueNode
 
 
 typedef struct _queue
 {
-	QueueNode *head;
-	QueueNode *tail;
+	QueueNode *head;				// 머리 노드
+	QueueNode *tail;				// 꼬리 노드
 }Queue; // You should not change the definition of queue
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -93,8 +93,31 @@ int main()
 
 void levelOrderTraversal(BSTNode* root)
 {
+	BSTNode *cur;
+	Queue *Q = malloc(sizeof(Queue));
 
-    /* add your code here */
+	if (Q != NULL)
+	{
+		Q -> head = NULL;
+		Q -> tail = NULL;
+		enqueue(&(Q->head), &(Q->tail), root);
+
+		while (Q -> head != NULL)
+		{
+			cur = dequeue(&(Q->head), &(Q->tail));
+
+			printf("%d, ", cur->item);
+
+			if (cur->left != NULL)
+			{
+				enqueue(&(Q->head), &(Q->tail), cur->left);
+			}
+			if (cur->right != NULL)
+			{
+				enqueue(&(Q->head), &(Q->tail), cur->right);
+			}
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
