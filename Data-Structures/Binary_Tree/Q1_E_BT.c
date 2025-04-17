@@ -116,6 +116,9 @@ int main()
 int identical(BTNode *tree1, BTNode *tree2)
 
 {
+    if (tree1 == NULL && tree2 == NULL) return 1; // 둘 다 NULL이면 identical
+    if (tree1 == NULL || tree2 == NULL) return 0; // 한 쪽만 NULL이면 다름
+
 	BTNode *cur1, *cur2;
 	Stack *stk1, *stk2;
 	stk1 = malloc(sizeof(Stack));
@@ -130,27 +133,36 @@ int identical(BTNode *tree1, BTNode *tree2)
 	cur1 = tree1;
     cur2 = tree2;
 
-    while ((cur1 != NULL || !isEmpty(stk1)) && (cur2 != NULL || !isEmpty(stk2)))
+    while ((cur1 != NULL || stk1->top != NULL) && (cur2 != NULL || stk2->top != NULL))
     {
         while (cur1 != NULL && cur2 != NULL)
         {
-            if (cur1->item == cur2->item)
-            {
-                push(stk1, cur1);
-                push(stk2, cur2);
-                cur1 = cur1->left;
-                cur2 = cur2->left;
-            }
-            else return 0;
+            if (cur1->item != cur2->item) return 0;
+            
+            push(stk1, cur1);
+            push(stk2, cur2);
+            cur1 = cur1->left;
+            cur2 = cur2->left;
+        }
+        if (cur1 != cur2) return 0;
+
+        if (stk1->top != NULL && stk2->top != NULL)
+        {
+            cur1 = pop(stk1);
+            cur2 = pop(stk2);
+
+            if (cur1->item != cur2->item) return 0;
+
+            cur1 = cur1->right;
+            cur2 = cur2->right;
         }
 
-        cur1 = pop(stk1);
-        cur2 = pop(stk2);
-        cur1 = cur1->right;
-        cur2 = cur2->right;
+        else if (stk1->top != NULL && stk2->top == NULL || stk1->top == NULL && stk2->top != NULL) return 0;
     }
 
-    free(stk);
+    free(stk1);
+    free(stk2);
+    return 1;
 }
 
 /////////////////////////////////////////////////////////////////////////////////
